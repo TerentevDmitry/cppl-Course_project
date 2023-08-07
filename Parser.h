@@ -72,29 +72,21 @@ public:
         std::map<std::string, std::map<std::string, std::string>>::iterator it1 = iniData_.find(currentSection);
         if (it1 == iniData_.end())
         {
-            std::cout << "Секция " << currentSection << " не найденa" << std::endl;
+            throw std::runtime_error(currentSection_ + " не найденa");
         }
         else
         {
             std::map<std::string, std::string>& innerMap = iniData_[currentSection];
-            if (innerMap.count(key) == 0)
+            if (!innerMap.count(key))
             {
-                std::cout << "В секции " << currentSection << ", не найден ключ: " << key << std::endl;
+                throw std::runtime_error("В секции " + currentSection + ", не найден ключ: " + key);
+                //std::cout << "В секции " << currentSection << ", не найден ключ: " << key << std::endl;
             }
             else
             {
                 std::cout << "Значение iniData_[" << currentSection << "][" << key << "]: " << iniData_[currentSection][key] << std::endl;
             }
         }
-        return 0;
+        return iniData_[currentSection][key];
     }
-
-
-
-
-
-
-
-
 };
-
