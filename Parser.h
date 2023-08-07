@@ -69,7 +69,23 @@ public:
     template <class T>
     T getValue(T currentSection, T key)
     {
-        std::cout << "Значение iniData_[" << currentSection << "][" << key << "]: " << iniData_[currentSection][key] << std::endl;
+        std::map<std::string, std::map<std::string, std::string>>::iterator it1 = iniData_.find(currentSection);
+        if (it1 == iniData_.end())
+        {
+            std::cout << "Секция " << currentSection << " не найденa" << std::endl;
+        }
+        else
+        {
+            std::map<std::string, std::string>& innerMap = iniData_[currentSection];
+            if (innerMap.count(key) == 0)
+            {
+                std::cout << "В секции " << currentSection << ", не найден ключ: " << key << std::endl;
+            }
+            else
+            {
+                std::cout << "Значение iniData_[" << currentSection << "][" << key << "]: " << iniData_[currentSection][key] << std::endl;
+            }
+        }
         return 0;
     }
 
