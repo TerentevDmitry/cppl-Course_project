@@ -59,18 +59,22 @@
 //    return iniData;
 //}
 
-int main() 
+int main()
 {
     setlocale(LC_ALL, "ru");
 
-    std::string filename = "cpplCourseProject.ini";
-
     try {
-        std::map<std::string, std::map<std::string, std::string>> iniData = parseIniFile(filename);
+        
+        iniParser pars1("cpplCourseProject.ini");
 
-        // Пример использования данных из ini файла
-        std::string value = iniData["Section5"]["var1"];
-        std::cout << "Значение: " << value << std::endl;
+        auto value1 = pars1.getValue("Section1", "var1");
+        auto value2 = pars1.getValue("Section1", "var2");
+        auto value3 = pars1.getValue("Section2", "var1");
+        auto value4 = pars1.getValue("Section2", "var2");
+        auto value5 = pars1.getValue("Section3", "var1");
+        auto value6 = pars1.getValue("Section4", "var1");
+        auto value7 = pars1.getValue("Section5", "var1");
+        
     }
     catch (const std::exception& e) {
         std::cout << "Ошибка при чтении ini файла: " << e.what() << std::endl;
