@@ -18,7 +18,6 @@ private:
     std::string key_;
     std::string value_;
 
-
 public:
     iniParser(const std::string& filename) : filename_{ filename } 
     {
@@ -72,6 +71,7 @@ public:
         std::map<std::string, std::map<std::string, std::string>>::iterator it1 = iniData_.find(currentSection);
         if (it1 == iniData_.end())
         {
+
             throw std::runtime_error(currentSection_ + " не найденa");
         }
         else
@@ -79,6 +79,19 @@ public:
             std::map<std::string, std::string>& innerMap = iniData_[currentSection];
             if (!innerMap.count(key))
             {
+            //    std::cout << "В секции " << currentSection << " есть только ключи: " << std::endl;
+            //    
+            //    for (const auto& [s1, s2] : iniData_)
+            //    {
+            //        std::cout << s1 << std::endl;
+
+            //        for (const auto& [k, v] : innerMap)
+            //        {
+            //            std::cout << k << " - " << v << std::endl;
+            //        
+            //        }
+            //    }
+                
                 throw std::runtime_error("В секции " + currentSection + ", не найден ключ: " + key);
                 //std::cout << "В секции " << currentSection << ", не найден ключ: " << key << std::endl;
             }

@@ -14,7 +14,7 @@ int main()
 
     try 
     {
-        iniParser pars1("cpplCourseProject.ini");
+        iniParser pars1("cppl_course_project.ini");
 
         auto value1 = pars1.getValue<std::string>("Section1", "var1");
         auto value2 = pars1.getValue<std::string>("Section1", "var2");
