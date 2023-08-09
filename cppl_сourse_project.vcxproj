@@ -128,11 +128,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cpplCourseProject.cpp" />
-    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="cppl_course_project.cpp" />
+    <ClCompile Include="parser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Parser.h" />
+    <ClInclude Include="parser.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cppl_course_project.ini" />
