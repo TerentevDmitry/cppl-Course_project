@@ -4,9 +4,8 @@
 #include <fstream>
 #include <map>
 #include <sstream>
-
-
-
+#include <string>
+#include <type_traits>
 
 class iniParser
 {
@@ -17,89 +16,130 @@ private:
     std::string line_;
     std::string key_;
     std::string value_;
+    int tmpIniData_ = 0;
 
 public:
-    iniParser(const std::string& filename) : filename_{ filename } 
-    {
-        std::ifstream file(filename_);
-
-        if (!file.is_open())
-        {
-            throw std::runtime_error("Ошибка открытия файла: " + filename_);
-        }
-
-        while (std::getline(file, line_))
-        {
-            // Пропускаем комментарии и пустые строки
-            if (line_.empty() || line_[0] == ';')
-            {
-                continue;
-            }
-
-            // Находим новый раздел
-            if ((line_[0] == '[') && (line_[line_.length() - 1] == ']'))
-            {
-                // Найден новый раздел
-                currentSection_ = line_.substr(1, line_.length() - 2);
-            }
-            else
-            {
-                // Найдена строка с ключом и значением
-                std::istringstream iss(line_);
-                
-                if (std::getline(iss, key_, '='))
-                {
-                    if (std::getline(iss, value_))
-                    {
-                        size_t pos = value_.find(';');  // находим позицию первого вхождения знака ";"
-
-                        if (pos != std::string::npos) // если знак найден
-                        {
-                            value_ = value_.substr(0, pos);  // обрезаем строку, оставляя только часть до знака ";"
-                        }
-                        iniData_[currentSection_][key_] = value_;
-                    }
-                }
-            }
-        }
-        file.close();
-    }
+    iniParser(const std::string& filename);
 
     template <class T>
-    T getValue(T currentSection, T key)
+    T getValue(const std::string currentSection, const std::string key)
     {
+        //проверка совпадения типов данных
+        static_assert(sizeof(T)==-1,"Invalid data type");
+
+        //std::map<std::string, std::map<std::string, std::string>>::iterator it1 = iniData_.find(currentSection);
+        //if (it1 == iniData_.end())
+        //{
+        //    throw std::runtime_error(currentSection_ + " not found");
+        //}
+        //else
+        //{
+        //    std::map<std::string, std::string>& innerMap = iniData_[currentSection];
+        //    if (!innerMap.count(key))
+        //    {
+        //    //    std::cout << "В секции " << currentSection << " есть только ключи: " << std::endl;
+        //    //    
+        //    //    for (const auto& [s1, s2] : iniData_)
+        //    //    {
+        //    //        std::cout << s1 << std::endl;
+        //    //        for (const auto& [k, v] : innerMap)
+        //    //        {
+        //    //            std::cout << k << " - " << v << std::endl;
+        //    //        
+        //    //        }
+        //    //    }
+        //        throw std::runtime_error("In the section " + currentSection + ", no key found: " + key);
+        //    }
+        //    else
+        //    {
+        //        std::cout << "Value [" << currentSection << "][" << key << "]: " << iniData_[currentSection][key] << std::endl;
+        //    }
+        //}
+        //return iniData_[currentSection][key];
+    }
+
+    template <>
+    std::string getValue(const std::string currentSection, const std::string key)
+    {
+
         std::map<std::string, std::map<std::string, std::string>>::iterator it1 = iniData_.find(currentSection);
         if (it1 == iniData_.end())
         {
-
-            throw std::runtime_error(currentSection_ + " не найденa");
+            throw std::runtime_error(currentSection_ + " not found");
         }
         else
         {
             std::map<std::string, std::string>& innerMap = iniData_[currentSection];
             if (!innerMap.count(key))
             {
-            //    std::cout << "В секции " << currentSection << " есть только ключи: " << std::endl;
-            //    
-            //    for (const auto& [s1, s2] : iniData_)
-            //    {
-            //        std::cout << s1 << std::endl;
-
-            //        for (const auto& [k, v] : innerMap)
-            //        {
-            //            std::cout << k << " - " << v << std::endl;
-            //        
-            //        }
-            //    }
-                
-                throw std::runtime_error("В секции " + currentSection + ", не найден ключ: " + key);
-                //std::cout << "В секции " << currentSection << ", не найден ключ: " << key << std::endl;
+                throw std::runtime_error("In the section " + currentSection + ", no key found: " + key);
             }
             else
             {
-                std::cout << "Значение iniData_[" << currentSection << "][" << key << "]: " << iniData_[currentSection][key] << std::endl;
+                std::cout << "Value [" << currentSection << "][" << key << "]: " << iniData_[currentSection][key] << std::endl;
             }
         }
         return iniData_[currentSection][key];
     }
+
+    template <>
+    int getValue(const std::string currentSection, const std::string key)
+    {
+
+        std::map<std::string, std::map<std::string, std::string>>::iterator it1 = iniData_.find(currentSection);
+        if (it1 == iniData_.end())
+        {
+            throw std::runtime_error(currentSection_ + " not found");
+        }
+        else
+        {
+            std::map<std::string, std::string>& innerMap = iniData_[currentSection];
+            if (!innerMap.count(key))
+            {
+                //    std::cout << "В секции " << currentSection << " есть только ключи: " << std::endl;
+                //    
+                //    for (const auto& [s1, s2] : iniData_)
+                //    {
+                //        std::cout << s1 << std::endl;
+                //        for (const auto& [k, v] : innerMap)
+                //        {
+                //            std::cout << k << " - " << v << std::endl;
+                //        
+                //        }
+                //    }
+                throw std::runtime_error("In the section " + currentSection + ", no key found: " + key);
+            }
+            else
+            {
+                std::cout << "Value [" << currentSection << "][" << key << "]: " << iniData_[currentSection][key] << std::endl;
+            }
+        }
+        
+        //if (iniData_[currentSection][key].find("."))
+        //{
+        //    std::cout << "Value [" << currentSection << "][" << key << "]: " << "" << std::endl;
+        //}
+        
+        try
+        {
+            tmpIniData_ = std::stoi(iniData_[currentSection][key]);
+        }
+        catch (const std::out_of_range& ex)
+        {
+            throw ex;
+        }
+        catch (const std::invalid_argument& ex)
+        {
+            throw ex;
+        }
+        return tmpIniData_;
+    }
+
+   
+    
+    
+
+
+
+
 };
