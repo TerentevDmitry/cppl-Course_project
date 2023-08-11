@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <type_traits>
+#include <locale>
 
 class iniParser
 {
@@ -129,7 +130,7 @@ public:
         return tmpIniDataInt_;
     }
 
-    //int
+    //double
     template <>
     double getValue(const std::string currentSection, const std::string key)
     {
