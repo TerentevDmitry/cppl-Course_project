@@ -22,17 +22,23 @@ iniParser::iniParser(const std::string& filename) : filename_{ filename }
         // Находим новый раздел
         if ((line_[0] == '[') && (line_[line_.length() - 1] == ']'))
         {
+            ++lineNumber_;
             // Найден новый раздел
             currentSection_ = line_.substr(1, line_.length() - 2);
-            ++lineNumber_;
         }
         else
         {
+            ++lineNumber_;
             // Найдена строка с ключом и значением
             std::istringstream iss(line_);
 
             if (std::getline(iss, key_, '='))
             {
+                if (value_ == "")
+                {
+                    throw std::runtime_error("no variable value in " + currentSection_ + " in line # " + std::to_string(lineNumber_));
+                }
+
                 if (std::getline(iss, value_))
                 {
                     size_t pos = value_.find(';');  // находим позицию первого вхождения знака ";"
@@ -44,12 +50,10 @@ iniParser::iniParser(const std::string& filename) : filename_{ filename }
                     iniData_[currentSection_][key_] = value_;
                 }
             }
-            ++lineNumber_;
         }
     }
     file.close();
 }
-
 
 std::string iniParser::getStringValue(const std::string currentSection, const std::string key, const int lineNumber)
 {
@@ -82,4 +86,4 @@ void iniParser::printMap(const std::string currentSection, const std::string key
         const std::string& innerKey = innerIt->first;
         std::cout << innerKey << std::endl;
     }
-};
+}

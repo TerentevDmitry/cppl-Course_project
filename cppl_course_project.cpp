@@ -31,7 +31,7 @@ int main()
 
         std::cout << std::setprecision(5) << std::fixed << std::endl;
         std::cout << pars1.getValue<std::string>("Section2", "var2") << std::endl << std::endl;
-        std::cout << pars1.getValue<int>("Section5", "var19") << std::endl << std::endl;
+        std::cout << pars1.getValue<int>("Section5", "var1") << std::endl << std::endl;
         std::cout << pars1.getValue<double>("Section2", "var1") << std::endl << std::endl;
         std::cout << pars1.getValue<float>("Section2", "var1") << std::endl << std::endl;
     }

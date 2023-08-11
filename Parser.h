@@ -10,7 +10,7 @@
 
 enum class iniWarning
 {
-    pointIsFound = 1
+    pointIsFound = 1, dataTypeFalse = -1
 };
 
 class iniParser
@@ -27,7 +27,7 @@ private:
     double tmpIniDataDouble_ = 0.0;
     float tmpIniDataFloat_ = 0.0;
     int lineNumber_ = 0;
-
+    
     std::string getStringValue(const std::string currentSection, const std::string key, const int lineNumber);
     void printMap(const std::string currentSection, const std::string key);
 
@@ -39,7 +39,7 @@ public:
     T getValue(const std::string currentSection, const std::string key)
     {
         //проверка совпадения типов данных
-        static_assert(sizeof(T)==-1,"Invalid data type");
+        static_assert(sizeof(T)== static_cast<int> (iniWarning::dataTypeFalse), "Invalid data type");
     }
 
     //std::string
