@@ -15,6 +15,7 @@ iniParser::iniParser(const std::string& filename) : filename_{ filename }
         // Пропускаем комментарии и пустые строки
         if (line_.empty() || line_[0] == ';')
         {
+            ++lineNumber_;
             continue;
         }
 
@@ -23,6 +24,7 @@ iniParser::iniParser(const std::string& filename) : filename_{ filename }
         {
             // Найден новый раздел
             currentSection_ = line_.substr(1, line_.length() - 2);
+            ++lineNumber_;
         }
         else
         {
@@ -42,11 +44,42 @@ iniParser::iniParser(const std::string& filename) : filename_{ filename }
                     iniData_[currentSection_][key_] = value_;
                 }
             }
+            ++lineNumber_;
         }
     }
     file.close();
+}
+
+
+std::string iniParser::getStringValue(const std::string currentSection, const std::string key, const int lineNumber)
+{
+    std::map<std::string, std::map<std::string, std::string>>::iterator it1 = iniData_.find(currentSection);
+    if (it1 == iniData_.end())
+    {
+        printMap(currentSection, key);
+        throw std::runtime_error(currentSection + " not found");
+    }
+    else
+    {
+        std::map<std::string, std::string>& innerMap = iniData_[currentSection];
+        if (!innerMap.count(key))
+        {
+            printMap(currentSection, key);
+            throw std::runtime_error("");
+        }
+    }
+    return iniData_[currentSection][key];
+}
+
+void iniParser::printMap(const std::string currentSection, const std::string key)
+{
+    std::cout << "There are no key: " + key + ", in the section " + currentSection << std::endl;
+    std::cout << "There are has: " << std::endl;
+
+    const std::map<std::string, std::string>& innerMap = iniData_[currentSection];
+    for (auto innerIt = innerMap.begin(); innerIt != innerMap.end(); ++innerIt)
+    {
+        const std::string& innerKey = innerIt->first;
+        std::cout << innerKey << std::endl;
+    }
 };
-
-
-
-

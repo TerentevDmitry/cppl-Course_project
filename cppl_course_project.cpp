@@ -5,7 +5,7 @@
 #include <fstream>
 #include <map>
 #include <sstream>
-
+#include <iomanip>
 
 #include "parser.h"
 
@@ -29,14 +29,15 @@ int main()
         //auto value10 = pars1.getValue<std::string>("Section5", "var3");
         //auto value11 = pars1.getValue<std::string>("Section99", "unvar1");
 
-        std::cout << pars1.getValue<std::string>("Section5", "var1") << std::endl;
-        std::cout << pars1.getValue<int>("Section1", "var1") << std::endl;
-        std::cout << pars1.getValue<double>("Section1", "var1") << std::endl;
-        //std::cout << pars1.getValue<float>("Section1", "var1") << std::endl;
+        std::cout << std::setprecision(5) << std::fixed << std::endl;
+        std::cout << pars1.getValue<std::string>("Section2", "var2") << std::endl << std::endl;
+        std::cout << pars1.getValue<int>("Section5", "var19") << std::endl << std::endl;
+        std::cout << pars1.getValue<double>("Section2", "var1") << std::endl << std::endl;
+        std::cout << pars1.getValue<float>("Section2", "var1") << std::endl << std::endl;
     }
     catch (const std::runtime_error& ex)
     {
-        std::cout << "Error when reading the ini file: " << ex.what() << std::endl;
+        std::cout << "Error when reading the ini file. " << ex.what() << std::endl;
     }
     catch (const std::out_of_range& ex)
     {
