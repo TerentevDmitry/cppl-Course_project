@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <type_traits>
+#include <locale>
 
 class iniParser
 {
@@ -17,7 +18,7 @@ private:
     std::string key_;
     std::string value_;
     int tmpIniDataInt_ = 0;
-    
+    double tmpIniDataDouble_ = 0.0;
     float tmpIniDataFloat_ = 0.0;
 
 
@@ -129,7 +130,7 @@ public:
         return tmpIniDataInt_;
     }
 
-    //int
+    //double
     template <>
     double getValue(const std::string currentSection, const std::string key)
     {
@@ -151,7 +152,7 @@ public:
                 std::cout << "Value [" << currentSection << "][" << key << "]: " << iniData_[currentSection][key] << std::endl;
             }
         }
-        double tmpIniDataDouble_ = 9.9999;
+        
         try
         {
             tmpIniDataDouble_ = std::stod(iniData_[currentSection][key]);

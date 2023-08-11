@@ -6,11 +6,12 @@
 #include <map>
 #include <sstream>
 
+
 #include "parser.h"
 
 int main()
 {
-    setlocale(LC_ALL, "ru");
+    std::setlocale(LC_NUMERIC, "C");
 
     try 
     {
