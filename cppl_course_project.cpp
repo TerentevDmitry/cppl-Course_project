@@ -28,11 +28,10 @@ int main()
         //auto value10 = pars1.getValue<std::string>("Section5", "var3");
         //auto value11 = pars1.getValue<std::string>("Section99", "unvar1");
 
-        std::cout << pars1.getValue<std::string>("Section1", "var2") << std::endl;
+        std::cout << pars1.getValue<std::string>("Section5", "var1") << std::endl;
         std::cout << pars1.getValue<int>("Section1", "var1") << std::endl;
+        std::cout << pars1.getValue<double>("Section1", "var1") << std::endl;
         //std::cout << pars1.getValue<float>("Section1", "var1") << std::endl;
-        //std::cout << pars1.getValue<double>("Section1", "var1") << std::endl;
-
     }
     catch (const std::runtime_error& ex)
     {
